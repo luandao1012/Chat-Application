@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#171717">
+    android:background="@drawable/img_splash_screen">
     <ImageView
         android:id="@+id/marriott_ho"
         android:layout_width="90dp"

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#171717"
+    tools:context=".HomeInboxActivity">
+
+    <LinearLayout
+        android:id="@+id/taskbarHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/taskbar_background"
+        android:weightSum="10">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/circle"
+            app:srcCompat="@drawable/avatar_img" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_weight="8"
+            android:fontFamily="@font/sacramento_regular"
+            android:gravity="center"
+            android:text="Messanger"
+            android:textColor="#FEFCFC"
+            android:textSize="32sp" />
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/img_notification" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/search_home_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="17dp"
+        android:background="@drawable/search_home_background"
+        android:weightSum="10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskbarHome">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="14dp"
+            android:src="@drawable/img_search" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginStart="4dp"
+            android:layout_weight="10"
+            android:background="@null"
+            android:fontFamily="@font/poppins_medium"
+            android:hint="Search"
+            android:paddingStart="2dp"
+            android:textColorHint="#FEFCFC"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/img_mic" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="11dp"
+        android:weightSum="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_home_layout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtInboxHome"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="Inbox"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lineInboxHome"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@drawable/option_line_background" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtCommunityHome"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="Community"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lineCommunityHome"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@drawable/option_line_background"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
