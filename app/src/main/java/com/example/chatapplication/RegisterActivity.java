@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,15 +17,22 @@ import android.widget.Toast;
 import com.example.chatapplication.entities.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    TextView txtLoginNow;
+    EditText edtUsername, edtEmail, edtPhone;
+    TextInputLayout edtPassword;
+    Button btnRegister;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
@@ -32,12 +41,13 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        TextView txtLoginNow = findViewById(R.id.txtLoginNow);
-        EditText edtUsername = findViewById(R.id.edtUsernameRegister);
-        EditText edtEmail = findViewById(R.id.edtEmailRegister);
-        EditText edtPhone = findViewById(R.id.edtMobileNumberRegister);
-        TextInputLayout edtPassword = findViewById(R.id.edtPasswordRegister);
-        Button btnRegister = findViewById(R.id.btnRegister);
+        txtLoginNow = findViewById(R.id.txtLoginNow);
+        edtUsername = findViewById(R.id.edtUsernameRegister);
+        edtEmail = findViewById(R.id.edtEmailRegister);
+        edtPhone = findViewById(R.id.edtMobileNumberRegister);
+        edtPassword = findViewById(R.id.edtPasswordRegister);
+        btnRegister = findViewById(R.id.btnRegister);
+        edtPassword.setErrorTextColor(ColorStateList.valueOf(Color.WHITE));
 
 
         Intent intentToLogin = new Intent(RegisterActivity.this, LoginActivity.class);
@@ -62,35 +72,108 @@ public class RegisterActivity extends AppCompatActivity {
                 phone = edtPhone.getText().toString();
                 password = edtPassword.getEditText().getText().toString();
 
+                if (validate(email, username, phone, password)) {
+                    Query checkUsername = databaseReference.orderByChild("username").equalTo(username);
+                    checkUsername.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                edtUsername.setError("Username already exists");
+                                edtUsername.requestFocus();
+                            } else {
+                                firebaseAuth.createUserWithEmailAndPassword(email, password)
+                                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (task.isSuccessful()) {
+                                                    User user = new User();
+                                                    user.setUsername(username);
+                                                    user.setEmail(email);
+                                                    user.setPassword(password);
+                                                    user.setPhone(phone);
 
-                firebaseAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()){
-                                    User user = new User();
-                                    user.setUsername(username);
-                                    user.setEmail(email);
-                                    user.setPassword(password);
-                                    user.setPhone(phone);
-
-                                    databaseReference.child(username).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                Toast.makeText(RegisterActivity.this, "User has been registered successfully!", Toast.LENGTH_LONG).show();
-                                                startActivity(intentToLogin);
-                                            } else {
-                                                Toast.makeText(RegisterActivity.this, "Failed to register! Try again", Toast.LENGTH_LONG).show();
+                                                    databaseReference.child(firebaseAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                Toast.makeText(RegisterActivity.this, "User has been registered successfully!", Toast.LENGTH_LONG).show();
+                                                                startActivity(intentToLogin);
+                                                            } else {
+                                                                Toast.makeText(RegisterActivity.this, "Failed to register! Try again", Toast.LENGTH_LONG).show();
+                                                            }
+                                                        }
+                                                    });
+                                                } else {
+                                                    edtEmail.setError("This email has been registered");
+                                                    edtEmail.requestFocus();
+                                                }
                                             }
-                                        }
-                                    });
-                                } else {
-                                    Toast.makeText(RegisterActivity.this, "Failed to register! Try again", Toast.LENGTH_LONG).show();
-                                }
+                                        });
                             }
-                       } );
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
             }
         });
+    }
+
+    public boolean validate(String email, String username, String phone, String password) {
+        if (email.isEmpty()) {
+            edtEmail.setError("Cannot be empty");
+            edtEmail.requestFocus();
+            return false;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            edtEmail.setError("Email is incorrect");
+            edtEmail.requestFocus();
+            return false;
+        }
+
+        if (password.isEmpty()) {
+            edtPassword.setError("Cannot be empty");
+            edtPassword.requestFocus();
+            return false;
+        }
+        if (password.length() < 8 || password.length() > 16) {
+            edtPassword.setError("Password must be between 8-16 characters");
+            edtPassword.requestFocus();
+            return false;
+        }
+        if (!checkNum(password)) {
+            edtPassword.setError("Password must have at least 1 number");
+            edtPassword.requestFocus();
+            return false;
+        }
+        if (!checkUpperCase(password)) {
+            edtPassword.setError("Password must have at least 1 uppercase letter");
+            edtPassword.requestFocus();
+            return false;
+        }
+        if (checkWhiteSpace(password)) {
+            edtPassword.setError("Password must not contain spaces");
+            edtPassword.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean checkNum(String s) {
+        String pattern = ".*\\d.*";
+        return s.matches(pattern);
+    }
+
+    public static boolean checkUpperCase(String s) {
+        String pattern = ".*\\w.*";
+        return s.matches(pattern);
+    }
+
+    public static boolean checkWhiteSpace(String s) {
+        return s.contains(" ");
     }
 }

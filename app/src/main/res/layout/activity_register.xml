@@ -60,6 +60,7 @@
         android:paddingStart="18dp"
         android:background="@drawable/input_email_background"
         android:hint="Username"
+        android:inputType="text"
         />
     <TextView
         android:id="@+id/txtEmailRegister"
@@ -84,7 +85,8 @@
         android:layout_marginStart="30dp"
         android:paddingStart="18dp"
         android:background="@drawable/input_email_background"
-        android:hint="Email" />
+        android:hint="Email"
+        android:inputType="textEmailAddress"/>
     <TextView
         android:id="@+id/txtMobileNumberRegister"
         android:layout_width="wrap_content"
@@ -96,7 +98,8 @@
         android:textSize="18sp"
         android:fontFamily="@font/poppins_medium"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="6dp"/>
+        android:layout_marginTop="6dp"
+       />
     <EditText
         android:id="@+id/edtMobileNumberRegister"
         android:layout_width="match_parent"
@@ -108,7 +111,9 @@
         android:layout_marginStart="30dp"
         android:paddingStart="18dp"
         android:background="@drawable/input_email_background"
-        android:hint="Mobile Number" />
+        android:hint="Mobile Number"
+        android:inputType="phone"
+        />
     <TextView
         android:id="@+id/txtPasswordRegister"
         android:layout_width="wrap_content"
@@ -126,19 +131,23 @@
         android:layout_width="match_parent"
         app:layout_constraintTop_toBottomOf="@+id/txtPasswordRegister"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="30dp"
         android:layout_marginStart="30dp"
         app:passwordToggleEnabled="true"
-        app:hintEnabled="false">
-        <EditText
+        app:hintEnabled="false"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/input_email_background"
             android:hint="Password"
             android:inputType="textPassword"
-            android:paddingStart="18dp" />
+            android:paddingStart="18dp"
+            android:imeOptions="actionDone"/>
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

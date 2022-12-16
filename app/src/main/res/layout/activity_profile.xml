@@ -4,56 +4,112 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileActivity">
+    tools:context=".ProfileActivity"
+    android:background="#171717">
 
     <LinearLayout
-        android:id="@+id/taskbarHome"
+        android:id="@+id/taskbarProfile"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:background="@drawable/taskbar_background"
-        android:weightSum="10">
+        android:weightSum="10"
+        >
 
         <LinearLayout
+            android:id="@+id/profileBackSetting"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:gravity="center">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="13dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:scaleType="centerCrop"
-                app:shapeAppearanceOverlay="@style/circle"
-                app:srcCompat="@drawable/avatar_img" />
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/img_back_setting_profile" />
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="13dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:scaleType="centerCrop"
-                app:shapeAppearanceOverlay="@style/circle"
-                app:srcCompat="@drawable/avatar_img" />
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                app:srcCompat="@drawable/img_setting_profile" />
         </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="6dp"
-            android:layout_weight="8"
-            android:fontFamily="@font/sacramento_regular"
+            android:layout_weight="10"
             android:gravity="center"
             android:text="Profile"
+            android:fontFamily="@font/varela_round"
             android:textColor="#FEFCFC"
-            android:textSize="32sp" />
+            android:textSize="22sp"
+            android:layout_gravity="center"/>
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="28dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@drawable/img_notification" />
+        <LinearLayout
+            android:id="@+id/profileBackHome"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="21dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/img_home_profile" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:srcCompat="@drawable/img_back_home_profile" />
+        </LinearLayout>
     </LinearLayout>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgProfile"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="21dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/circle"
+        app:srcCompat="@drawable/avatar_img"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintTop_toBottomOf="@+id/taskbarProfile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <TextView
+        android:id="@+id/txtNameProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/imgProfile"
+        android:text="Luan"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/open_sans"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/txtUsernameProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/txtNameProfile"
+        android:textSize="12sp"
+        android:text="luandao1012"
+        android:textColor="#E2E2E2"
+        android:fontFamily="@font/open_sans"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/btn_logout_background"
+        android:text="Logout"
+        android:textAllCaps="false"
+        android:textColor="#E2E2E2"
+        android:textSize="18sp"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

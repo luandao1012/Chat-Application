@@ -10,11 +10,12 @@
     <LinearLayout
         android:id="@+id/taskbarHome"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:background="@drawable/taskbar_background"
         android:weightSum="10">
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgProfileHome"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="13dp"
