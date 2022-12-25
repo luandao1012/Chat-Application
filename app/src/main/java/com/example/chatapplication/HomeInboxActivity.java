@@ -1,6 +1,8 @@
 package com.example.chatapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,36 +10,26 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.chatapplication.adapter.TaskbarHomeAdapter;
+import com.google.android.material.tabs.TabLayout;
+
 public class HomeInboxActivity extends AppCompatActivity {
-    TextView txtInbox, txtCommunity, lineInbox, lineCommunity;
     ImageView imgProfileHome;
+    TabLayout tabLayout;
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_inbox);
 
-        txtInbox = findViewById(R.id.txtInboxHome);
-        txtCommunity = findViewById(R.id.txtCommunityHome);
-        lineInbox = findViewById(R.id.lineInboxHome);
-        lineCommunity = findViewById(R.id.lineCommunityHome);
         imgProfileHome = findViewById(R.id.imgProfileHome);
+        tabLayout = findViewById(R.id.tab_layout);
+        viewPager = findViewById(R.id.view_pager);
 
-        txtInbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                lineInbox.setVisibility(View.VISIBLE);
-                lineCommunity.setVisibility(View.GONE);
-            }
-        });
-
-        txtCommunity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                lineInbox.setVisibility(View.GONE);
-                lineCommunity.setVisibility(View.VISIBLE);
-            }
-        });
+        TaskbarHomeAdapter taskbarHomeAdapter = new TaskbarHomeAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        viewPager.setAdapter(taskbarHomeAdapter);
+        tabLayout.setupWithViewPager(viewPager);
 
         imgProfileHome.setOnClickListener(new View.OnClickListener() {
             @Override

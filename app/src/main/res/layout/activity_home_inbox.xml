@@ -86,65 +86,31 @@
             android:src="@drawable/img_mic" />
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="0dp"
         android:layout_marginTop="11dp"
-        android:weightSum="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_home_layout">
 
-        <LinearLayout
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabTextColor="#FFFFFF"/>
 
-            <TextView
-                android:id="@+id/txtInboxHome"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:fontFamily="@font/poppins_medium"
-                android:gravity="center"
-                android:text="Inbox"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/lineInboxHome"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@drawable/option_line_background" />
-        </LinearLayout>
-
-        <LinearLayout
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tab_layout"
+            app:layout_constraintVertical_bias="1.0" />
 
-            <TextView
-                android:id="@+id/txtCommunityHome"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:fontFamily="@font/poppins_medium"
-                android:gravity="center"
-                android:text="Community"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/lineCommunityHome"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@drawable/option_line_background"
-                android:visibility="gone" />
-        </LinearLayout>
-
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

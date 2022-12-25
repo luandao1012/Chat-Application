@@ -172,6 +172,9 @@ public class RegisterActivity extends AppCompatActivity {
         String pattern = ".*\\w.*";
         return s.matches(pattern);
     }
+    public static boolean checkNumPhone(String s){
+        return s.length()==10;
+    }
 
     public static boolean checkWhiteSpace(String s) {
         return s.contains(" ");
