@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,7 +24,9 @@ public class ProfileActivity extends AppCompatActivity {
     TextView txtName, txtUserName;
     DatabaseReference databaseReference;
     FirebaseUser firebaseUser;
+    FirebaseAuth firebaseAuth;
     LinearLayout layoutBackHome, layoutBackSetting;
+    Button btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +42,25 @@ public class ProfileActivity extends AppCompatActivity {
         txtUserName = findViewById(R.id.txtUsernameProfile);
         layoutBackHome = findViewById(R.id.profileBackHome);
         layoutBackSetting = findViewById(R.id.profileBackSetting);
+        btnLogout = findViewById(R.id.btnLogout);
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
+
         layoutBackHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                firebaseAuth.signOut();
+                startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
+                finish();
             }
         });
     }

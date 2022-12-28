@@ -19,10 +19,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
+    FirebaseUser user;
     EditText edtEmail;
     TextInputLayout edtPassword;
 
@@ -70,6 +72,15 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null ){
+            startActivity(new Intent(LoginActivity.this, HomeInboxActivity.class));
+        }
     }
 
     public boolean validate(String email, String password) {

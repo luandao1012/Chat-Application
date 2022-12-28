@@ -76,7 +76,8 @@
             android:hint="Search"
             android:paddingStart="2dp"
             android:textColorHint="#FEFCFC"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:importantForAutofill="no"/>
 
         <ImageView
             android:layout_width="24dp"
@@ -101,7 +102,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tabTextColor="#FFFFFF"/>
+            app:tabTextAppearance="@style/mineCustomTabText"
+            app:tabIndicator="@drawable/option_line_background"
+            app:tabIndicatorColor="#29B6F6"
+            app:tabIndicatorHeight="5dp"/>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
