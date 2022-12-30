@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#171717"
-    tools:context=".HomeInboxActivity">
+    tools:context=".activities.HomeInboxActivity">
 
     <LinearLayout
         android:id="@+id/taskbarHome"
