@@ -61,6 +61,7 @@ public class ContactFragment extends Fragment {
         users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
         ContactAdapter contactAdapter = new ContactAdapter(getContext(), users);
         rvContact.setAdapter(contactAdapter);
+
         contactAdapter.notifyDataSetChanged();
     }
 }

@@ -52,7 +52,8 @@ public class ProfileActivity extends AppCompatActivity {
         layoutBackHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                startActivity(new Intent(ProfileActivity.this, HomeInboxActivity.class));
+                finish();
             }
         });
 
@@ -71,6 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
+                assert user != null;
                 txtUserName.setText(user.getUsername());
             }
 
@@ -81,10 +83,4 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        finish();
-        startActivity(getIntent());
-    }
 }

@@ -74,10 +74,10 @@
             android:background="@null"
             android:fontFamily="@font/poppins_medium"
             android:hint="Search"
+            android:importantForAutofill="no"
             android:paddingStart="2dp"
             android:textColorHint="#FEFCFC"
-            android:textSize="16sp"
-            android:importantForAutofill="no"/>
+            android:textSize="16sp" />
 
         <ImageView
             android:layout_width="24dp"
@@ -102,10 +102,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tabTextAppearance="@style/mineCustomTabText"
             app:tabIndicator="@drawable/option_line_background"
             app:tabIndicatorColor="#29B6F6"
-            app:tabIndicatorHeight="5dp"/>
+            app:tabIndicatorHeight="5dp"
+            app:tabTextAppearance="@style/mineCustomTabText" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
@@ -117,4 +117,71 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="#F3FFEB3B"
+        android:orientation="vertical"
+        android:src="@drawable/img_add_option"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="right">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="Add Friend"
+                android:layout_marginEnd="10dp"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/open_sans"
+                android:layout_gravity="center" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/FABAddCommunity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#F3FFEB3B"
+                android:src="@drawable/img_add_friends"
+                tools:ignore="MissingConstraints" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Create Community"
+                android:textColor="#FFFFFF" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/FABAddFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#F3FFEB3B"
+            android:src="@drawable/img_add_community"
+            tools:ignore="MissingConstraints" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/FABOption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#F3FFEB3B"
+            android:src="@drawable/img_add_option"
+            tools:ignore="MissingConstraints" />
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

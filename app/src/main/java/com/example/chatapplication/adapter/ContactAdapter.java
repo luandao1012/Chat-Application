@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.chatapplication.R;
 import com.example.chatapplication.entities.User;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -25,8 +26,8 @@ import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
 
-    private Context mContext;
-    private List<User> users;
+    Context mContext;
+    List<User> users;
 
     public ContactAdapter(Context mContext, List<User> users) {
         this.mContext = mContext;
@@ -45,8 +46,36 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         if (users.size() == 0){
             return;
         }
-        holder.setContact(users.get(position));
+//        public void setContact(User user) {
+//            // load image
+//            class LoadImage extends AsyncTask<String, Void, Bitmap> {
+//                Bitmap bitmap = null;
+//
+//                @Override
+//                protected Bitmap doInBackground(String... strings) {
+//                    try {
+//                        URL url = new URL(strings[0]);
+//                        InputStream inputStream = url.openStream();
+//                        bitmap = BitmapFactory.decodeStream(inputStream);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    return bitmap;
+//                }
+//
+//                @Override
+//                protected void onPostExecute(Bitmap bitmap) {
+//                    super.onPostExecute(bitmap);
+//                    imgContact.setImageBitmap(bitmap);
+//                }
+//            }
+//
+//            new LoadImage().execute(user.getImage());
+            Glide.with(mContext).load(users.get(position).getImage()).error(R.drawable.avatar_img).into(holder.imgContact);
+            holder.txtContact.setText(users.get(position).getName());
+//        }
     }
+
 
     @Override
     public int getItemCount() {
@@ -65,34 +94,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             imgChat = itemView.findViewById(R.id.imgChat);
             imgInfo = itemView.findViewById(R.id.imgInfo);
             imgDelete = itemView.findViewById(R.id.imgDelete);
-        }
-
-        public void setContact(User user) {
-            // load image
-            class LoadImage extends AsyncTask<String, Void, Bitmap> {
-                Bitmap bitmap = null;
-
-                @Override
-                protected Bitmap doInBackground(String... strings) {
-                    try {
-                        URL url = new URL(strings[0]);
-                        InputStream inputStream = url.openStream();
-                        bitmap = BitmapFactory.decodeStream(inputStream);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return bitmap;
-                }
-
-                @Override
-                protected void onPostExecute(Bitmap bitmap) {
-                    super.onPostExecute(bitmap);
-                    imgContact.setImageBitmap(bitmap);
-                }
-            }
-
-            new LoadImage().execute(user.getImage());
-            txtContact.setText(user.getName());
         }
     }
 }

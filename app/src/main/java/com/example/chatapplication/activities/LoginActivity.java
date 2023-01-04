@@ -26,22 +26,21 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseUser user;
     EditText edtEmail;
     TextInputLayout edtPassword;
+    TextView txtCreateNow;
+    Button btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        TextView txtCreateNow = findViewById(R.id.txtCreateNow);
-        Button btnLogin = findViewById(R.id.btnLogin);
-        edtEmail = findViewById(R.id.edtEmail);
-        edtPassword = findViewById(R.id.edtPassword);
+        init();
 
         txtCreateNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                LoginActivity.this.startActivity(intent);
+                finish();
             }
         });
 
@@ -73,12 +72,20 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    public void init(){
+        txtCreateNow = findViewById(R.id.txtCreateNow);
+        btnLogin = findViewById(R.id.btnLogin);
+        edtEmail = findViewById(R.id.edtEmail);
+        edtPassword = findViewById(R.id.edtPassword);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
         user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null ){
             startActivity(new Intent(LoginActivity.this, HomeInboxActivity.class));
+            finish();
         }
     }
 

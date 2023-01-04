@@ -42,30 +42,20 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        txtLoginNow = findViewById(R.id.txtLoginNow);
-        edtUsername = findViewById(R.id.edtUsernameRegister);
-        edtEmail = findViewById(R.id.edtEmailRegister);
-        edtPhone = findViewById(R.id.edtMobileNumberRegister);
-        edtPassword = findViewById(R.id.edtPasswordRegister);
-        btnRegister = findViewById(R.id.btnRegister);
-        edtPassword.setErrorTextColor(ColorStateList.valueOf(Color.WHITE));
-
+        init();
 
         Intent intentToLogin = new Intent(RegisterActivity.this, LoginActivity.class);
         txtLoginNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(intentToLogin);
+                finish();
             }
         });
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                firebaseDatabase = FirebaseDatabase.getInstance();
-                databaseReference = firebaseDatabase.getReference("users");
-                firebaseAuth = FirebaseAuth.getInstance();
 
                 String username, email, phone, password;
                 username = edtUsername.getText().toString();
@@ -123,6 +113,19 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+    public void init(){
+        txtLoginNow = findViewById(R.id.txtLoginNow);
+        edtUsername = findViewById(R.id.edtUsernameRegister);
+        edtEmail = findViewById(R.id.edtEmailRegister);
+        edtPhone = findViewById(R.id.edtMobileNumberRegister);
+        edtPassword = findViewById(R.id.edtPasswordRegister);
+        btnRegister = findViewById(R.id.btnRegister);
+        edtPassword.setErrorTextColor(ColorStateList.valueOf(Color.WHITE));
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users");
+        firebaseAuth = FirebaseAuth.getInstance();
+    }
 
     public boolean validate(String email, String username, String phone, String password) {
         if (email.isEmpty()) {
@@ -172,9 +175,6 @@ public class RegisterActivity extends AppCompatActivity {
     public static boolean checkUpperCase(String s) {
         String pattern = ".*\\w.*";
         return s.matches(pattern);
-    }
-    public static boolean checkNumPhone(String s){
-        return s.length()==10;
     }
 
     public static boolean checkWhiteSpace(String s) {
