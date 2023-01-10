@@ -77,7 +77,7 @@
             android:importantForAutofill="no"
             android:paddingStart="2dp"
             android:textColorHint="#FEFCFC"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <ImageView
             android:layout_width="24dp"
@@ -134,6 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp">
             <TextView
+                android:id="@+id/txtFABAddFriend"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:text="Add Friend"
@@ -142,7 +143,7 @@
                 android:fontFamily="@font/open_sans"
                 android:layout_gravity="center" />
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/FABAddCommunity"
+                android:id="@+id/FABAddFriend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#F3FFEB3B"
@@ -156,6 +157,7 @@
             android:layout_marginBottom="15dp">
 
             <TextView
+                android:id="@+id/txtFABCreateCommunity"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_gravity="center"
@@ -164,7 +166,7 @@
                 android:text="Create Community"
                 android:textColor="#FFFFFF" />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/FABAddFriend"
+            android:id="@+id/FABAddCommunity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#F3FFEB3B"

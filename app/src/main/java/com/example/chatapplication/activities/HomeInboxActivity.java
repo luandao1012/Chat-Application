@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.chatapplication.R;
 import com.example.chatapplication.adapter.TaskbarHomeAdapter;
@@ -23,6 +24,7 @@ public class HomeInboxActivity extends AppCompatActivity {
     FloatingActionButton FABAddCommunity, FBAAddFriend, FABOption;
     Boolean showFAB = false;
     Animation animRotateOpenFAB, animRotateCloseFAB;
+    TextView txtFABAddFriend, txtFABCreateCommunity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +41,15 @@ public class HomeInboxActivity extends AppCompatActivity {
         FABOption = findViewById(R.id.FABOption);
         FABAddCommunity = findViewById(R.id.FABAddCommunity);
         FBAAddFriend = findViewById(R.id.FABAddFriend);
+        txtFABAddFriend = findViewById(R.id.txtFABAddFriend);
+        txtFABCreateCommunity = findViewById(R.id.txtFABCreateCommunity);
         animRotateOpenFAB = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_fab_open);
         animRotateCloseFAB = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_fab_close);
 
         FABAddCommunity.setVisibility(View.GONE);
         FBAAddFriend.setVisibility(View.GONE);
+        txtFABAddFriend.setVisibility(View.GONE);
+        txtFABCreateCommunity.setVisibility(View.GONE);
 
         TaskbarHomeAdapter taskbarHomeAdapter = new TaskbarHomeAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setAdapter(taskbarHomeAdapter);
@@ -65,13 +71,23 @@ public class HomeInboxActivity extends AppCompatActivity {
                     FABOption.startAnimation(animRotateOpenFAB);
                     FABAddCommunity.setVisibility(View.VISIBLE);
                     FBAAddFriend.setVisibility(View.VISIBLE);
+                    txtFABAddFriend.setVisibility(View.VISIBLE);
+                    txtFABCreateCommunity.setVisibility(View.VISIBLE);
                     showFAB = true;
                 } else {
                     FABOption.startAnimation(animRotateCloseFAB);
                     FABAddCommunity.setVisibility(View.GONE);
                     FBAAddFriend.setVisibility(View.GONE);
+                    txtFABAddFriend.setVisibility(View.GONE);
+                    txtFABCreateCommunity.setVisibility(View.GONE);
                     showFAB = false;
                 }
+            }
+        });
+        FBAAddFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeInboxActivity.this, FriendRequestActivity.class));
             }
         });
     }
