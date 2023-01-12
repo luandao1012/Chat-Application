@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@drawable/taskbar_background"
-        android:weightSum="10"
-        >
+        android:weightSum="10">
 
         <LinearLayout
             android:id="@+id/profileBackSetting"
@@ -55,7 +54,7 @@
                 android:layout_width="21dp"
                 android:layout_height="14dp"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/img_home_profile"/>
+                app:srcCompat="@drawable/img_home_profile" />
 
             <ImageView
                 android:layout_width="20dp"
@@ -75,7 +74,7 @@
         app:layout_constraintTop_toBottomOf="@+id/taskbarProfile"
         app:shapeAppearanceOverlay="@style/circle"
         app:srcCompat="@drawable/avatar_img"
-        tools:ignore="MissingConstraints"/>
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/txtNameProfile"
@@ -108,8 +107,8 @@
         android:id="@+id/imgBioProfile"
         android:layout_width="match_parent"
         android:layout_height="115dp"
-        android:layout_marginTop="13dp"
         android:layout_marginStart="25dp"
+        android:layout_marginTop="13dp"
         android:layout_marginEnd="25dp"
         android:scaleType="centerCrop"
         android:src="@drawable/img_bio_profile"
@@ -117,28 +116,29 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtUsernameProfile"
-        app:shapeAppearanceOverlay="@style/roundedCornersImageView">
-    </com.google.android.material.imageview.ShapeableImageView>
+        app:shapeAppearanceOverlay="@style/roundedCornersImageView"></com.google.android.material.imageview.ShapeableImageView>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/imgBioProfile"
-        app:layout_constraintBottom_toBottomOf="@+id/imgBioProfile"
-        app:layout_constraintStart_toStartOf="@+id/imgBioProfile"
-        app:layout_constraintEnd_toEndOf="@+id/imgBioProfile"
+        android:layout_marginStart="38dp"
+        android:layout_marginEnd="37dp"
+        android:background="@drawable/bio_profile_background"
         android:paddingStart="23dp"
         android:paddingTop="10dp"
         android:paddingEnd="23dp"
         android:paddingBottom="20dp"
-        android:layout_marginEnd="37dp"
-        android:layout_marginStart="38dp"
-        android:background="@drawable/bio_profile_background">
+        app:layout_constraintBottom_toBottomOf="@+id/imgBioProfile"
+        app:layout_constraintEnd_toEndOf="@+id/imgBioProfile"
+        app:layout_constraintStart_toStartOf="@+id/imgBioProfile"
+        app:layout_constraintTop_toTopOf="@+id/imgBioProfile">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Engineer by profession"
             android:textColor="#FEFCFC"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
     </ScrollView>
 
 
@@ -152,116 +152,126 @@
         android:textColor="#E2E2E2"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent" />
+
     <LinearLayout
         android:id="@+id/layoutSocialNetwork"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/imgBioProfile"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="7dp"
-        >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgBioProfile">
+
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/img_facebook_profile"/>
+            android:src="@drawable/img_facebook_profile" />
+
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/img_telegram_profile"/>
+            android:src="@drawable/img_telegram_profile" />
+
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/img_twitter_profile"/>
+            android:src="@drawable/img_twitter_profile" />
+
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:src="@drawable/img_instagram_profile"/>
+            android:src="@drawable/img_instagram_profile" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btnEditProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/layoutSocialNetwork"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="19dp"
         android:layout_marginStart="48dp"
+        android:layout_marginTop="19dp"
         android:layout_marginEnd="47dp"
         android:background="@drawable/button_login_background"
+        android:fontFamily="@font/poppins_medium"
         android:text="Edit Profile"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
-        android:fontFamily="@font/poppins_medium"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutSocialNetwork" />
 
     <LinearLayout
         android:id="@+id/layoutTaskList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/btnEditProfile"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogout"
         android:layout_marginTop="28dp"
         android:background="@drawable/task_list_profile_background"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogout"
+        app:layout_constraintTop_toBottomOf="@+id/btnEditProfile">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="21dp"
+            android:fontFamily="@font/poppins_medium"
             android:text="Starred Messages"
             android:textColor="#E2E2E2"
-            android:textSize="18sp"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginTop="21dp"
-            android:layout_marginStart="25dp"/>
+            android:textSize="18sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_medium"
             android:text="Inbox cleaner"
             android:textColor="#E2E2E2"
-            android:textSize="18sp"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="4dp"/>
+            android:textSize="18sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_medium"
             android:text="Manage Blocking"
             android:textColor="#E2E2E2"
-            android:textSize="18sp"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="4dp"/>
+            android:textSize="18sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_medium"
             android:text="Notifications"
             android:textColor="#E2E2E2"
-            android:textSize="18sp"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="4dp"/>
+            android:textSize="18sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_medium"
             android:text="Share profile"
             android:textColor="#E2E2E2"
-            android:textSize="18sp"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="4dp"/>
+            android:textSize="18sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_medium"
             android:text="Invite friends"
             android:textColor="#E2E2E2"
-            android:textSize="18sp"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="4dp"/>
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -270,20 +280,21 @@
             android:layout_marginTop="7dp">
 
             <ImageView
-                android:layout_width="32dp"
+                android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_add_account_profile" />
+                android:src="@drawable/img_add_account_profile"
+                android:layout_gravity="bottom"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="9dp"
+                android:fontFamily="@font/poppins_medium"
                 android:text="Add Account"
                 android:textColor="#E2E2E2"
-                android:textSize="18sp"
-                android:fontFamily="@font/poppins_medium"
-                android:layout_gravity="center"
-                android:layout_marginStart="9dp"/>
+                android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
 

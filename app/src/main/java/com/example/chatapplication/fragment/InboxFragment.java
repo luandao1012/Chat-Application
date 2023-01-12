@@ -44,7 +44,6 @@ public class InboxFragment extends Fragment {
         rvInbox.setLayoutManager(new LinearLayoutManager(getContext()));
 
         roomInboxes = new ArrayList<>();
-        roomInboxes.add(new RoomInbox("test1", "aaaaaaaaaaa", "10:30 pm", null, null));
 
         InboxAdapter inboxAdapter = new InboxAdapter(getContext(), roomInboxes);
         rvInbox.setAdapter(inboxAdapter);

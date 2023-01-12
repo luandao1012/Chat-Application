@@ -1,5 +1,6 @@
 package com.example.chatapplication.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,13 +16,25 @@ import android.view.ViewGroup;
 import com.example.chatapplication.R;
 import com.example.chatapplication.adapter.ContactAdapter;
 import com.example.chatapplication.entities.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ContactFragment extends Fragment {
     RecyclerView rvContact;
     List<User> users;
+    FirebaseUser firebaseUser;
+    DatabaseReference databaseReference;
+    ContactAdapter contactAdapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,27 +54,54 @@ public class ContactFragment extends Fragment {
         rvContact.setLayoutManager(new LinearLayoutManager(getContext()));
 
         users = new ArrayList<>();
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        ContactAdapter contactAdapter = new ContactAdapter(getContext(), users);
-        rvContact.setAdapter(contactAdapter);
+        contactAdapter = new ContactAdapter(getContext(), users);
 
-        contactAdapter.notifyDataSetChanged();
+        getListUser();
+
+        rvContact.setAdapter(contactAdapter);
+    }
+
+    private void getListUser() {
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                User user = snapshot.getValue(User.class);
+                assert user != null;
+                if (!user.getEmail().equals(firebaseUser.getEmail())) {
+                    users.add(user);
+                    contactAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                User user = snapshot.getValue(User.class);
+                for(int i=0; i<users.size(); i++){
+                    if(user.getUsername().equals(users.get(i).getUsername())){
+                        users.set(i, user);
+                        contactAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

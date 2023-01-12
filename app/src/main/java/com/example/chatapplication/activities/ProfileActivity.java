@@ -10,8 +10,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.chatapplication.R;
 import com.example.chatapplication.entities.User;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,7 +29,8 @@ public class ProfileActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseAuth firebaseAuth;
     LinearLayout layoutBackHome, layoutBackSetting;
-    Button btnLogout;
+    Button btnLogout, btnEditProfile;
+    ShapeableImageView imgAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         init();
-        setViews();
+        setView();
     }
 
     private void init(){
@@ -44,6 +47,8 @@ public class ProfileActivity extends AppCompatActivity {
         layoutBackHome = findViewById(R.id.profileBackHome);
         layoutBackSetting = findViewById(R.id.profileBackSetting);
         btnLogout = findViewById(R.id.btnLogout);
+        imgAvatar = findViewById(R.id.imgProfile);
+        btnEditProfile = findViewById(R.id.btnEditProfile);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -65,15 +70,24 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this, EditProfileActivity.class));
+            }
+        });
     }
 
-    private void setViews() {
+    private void setView() {
         databaseReference.child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 User user = snapshot.getValue(User.class);
                 assert user != null;
                 txtUserName.setText(user.getUsername());
+                Glide.with(getBaseContext()).load(user.getImage()).into(imgAvatar);
             }
 
             @Override

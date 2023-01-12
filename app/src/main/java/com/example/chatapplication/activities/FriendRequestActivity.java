@@ -31,25 +31,6 @@ public class FriendRequestActivity extends AppCompatActivity {
 
         users = new ArrayList<>();
 
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-        users.add(new User("luan", "Luan", "daovanluan201@gmail.com", "12345", "123", "https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668440767/IMG_20221018_201849_c7numh.jpg", null));
-
         FriendRequestAdapter friendRequestAdapter = new FriendRequestAdapter(users, getBaseContext());
         rvFriendRequest.setAdapter(friendRequestAdapter);
 

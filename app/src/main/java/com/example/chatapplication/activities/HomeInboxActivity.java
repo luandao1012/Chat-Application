@@ -1,21 +1,36 @@
 package com.example.chatapplication.activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.chatapplication.R;
 import com.example.chatapplication.adapter.TaskbarHomeAdapter;
+import com.example.chatapplication.entities.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomeInboxActivity extends AppCompatActivity {
     ImageView imgProfileHome;
@@ -25,15 +40,36 @@ public class HomeInboxActivity extends AppCompatActivity {
     Boolean showFAB = false;
     Animation animRotateOpenFAB, animRotateCloseFAB;
     TextView txtFABAddFriend, txtFABCreateCommunity;
+    FirebaseUser firebaseUser;
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_inbox);
         init();
-
+        setView();
     }
 
+    public void setView(){
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+
+        databaseReference.child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                assert user != null;
+                Glide.with(getBaseContext()).load(user.getImage()).into(imgProfileHome);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
     public void init() {
         imgProfileHome = findViewById(R.id.imgProfileHome);
         tabLayout = findViewById(R.id.tab_layout);
@@ -84,6 +120,7 @@ public class HomeInboxActivity extends AppCompatActivity {
                 }
             }
         });
+
         FBAAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,4 +129,22 @@ public class HomeInboxActivity extends AppCompatActivity {
         });
     }
 
+    public void checkOnlineStatus(String status){
+        HashMap<String, Object> mapStatus = new HashMap<>();
+        mapStatus.put("status", status);
+        databaseReference.child(firebaseUser.getUid()).updateChildren(mapStatus);
+    }
+    @Override
+    protected void onStart() {
+        checkOnlineStatus("Online");
+        Log.d("AA", "Online");
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        checkOnlineStatus("Offline");
+        Log.d("AA", "Offline");
+        super.onDestroy();
+    }
 }

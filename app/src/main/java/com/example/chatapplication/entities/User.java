@@ -3,6 +3,7 @@ package com.example.chatapplication.entities;
 import java.io.Serializable;
 
 public class User implements Serializable {
+    private String ID;
     private String username;
     private String name;
     private String email;
@@ -10,11 +11,12 @@ public class User implements Serializable {
     private String phone;
     private String image;
     private String bio;
+    private String status;
 
     public User() {
     }
 
-    public User(String username, String name, String email, String password, String phone, String image, String bio) {
+    public User(String username, String name, String email, String password, String phone, String image, String bio, String status) {
         this.username = username;
         this.name = name;
         this.email = email;
@@ -22,6 +24,15 @@ public class User implements Serializable {
         this.phone = phone;
         this.image = image;
         this.bio = bio;
+        this.status = status;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     public String getUsername() {
@@ -78,5 +89,13 @@ public class User implements Serializable {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

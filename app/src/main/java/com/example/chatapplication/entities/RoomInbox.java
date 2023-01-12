@@ -6,16 +6,29 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.List;
 
 public class RoomInbox {
-    private String name, lastMessage, timeLastMessage;
-    private List<User> participants;
+    private String ID,name, lastMessage, timeLastMessage, image;
+    private List<String> participants;
     private List<Message> messages;
 
-    public RoomInbox(String name, String lastMessage, String timeLastMessage, List<User> participants, List<Message> messages) {
+    public RoomInbox() {
+    }
+
+    public RoomInbox(String ID, String name, String lastMessage, String timeLastMessage, String image, List<String> participants, List<Message> messages) {
+        this.ID = ID;
         this.name = name;
         this.lastMessage = lastMessage;
         this.timeLastMessage = timeLastMessage;
+        this.image = image;
         this.participants = participants;
         this.messages = messages;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     public String getName() {
@@ -42,11 +55,11 @@ public class RoomInbox {
         this.timeLastMessage = timeLastMessage;
     }
 
-    public List<User> getParticipants() {
+    public List<String> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(List<User> participants) {
+    public void setParticipants(List<String> participants) {
         this.participants = participants;
     }
 
@@ -54,15 +67,15 @@ public class RoomInbox {
         return messages;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
-//    public User getUser(){
-//        String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//        for(User i:participants){
-//            if ( != firebaseUser){
-//                return i;
-//            }
-//        }
-//    }
 }
