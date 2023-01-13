@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgAvatarChatReceiver"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="6dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/circle"
+            app:srcCompat="@drawable/avatar_img"
+            tools:ignore="MissingConstraints"
+            app:strokeColor="@null"/>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/row_receiver_chat"
+            android:layout_marginStart="9dp"
+            android:padding="5dp">
+            <TextView
+                android:id="@+id/txtMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="testttttt"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:fontFamily="@font/open_sans"/>
+            <TextView
+                android:id="@+id/txtTimeMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="23:00"
+                android:textColor="#ACB3BF"
+                android:textSize="12sp"
+                android:fontFamily="@font/open_sans" />
+        </LinearLayout>
+
+</LinearLayout>

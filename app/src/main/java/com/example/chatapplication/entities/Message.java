@@ -1,7 +1,22 @@
 package com.example.chatapplication.entities;
 
-public class Message {
+import java.io.Serializable;
+
+public class Message implements Serializable {
+    private int id;
     private String sender, date, time, type, message;
+    private boolean isSeen;
+
+    public Message() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getSender() {
         return sender;
@@ -41,5 +56,13 @@ public class Message {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public boolean isSeen() {
+        return isSeen;
+    }
+
+    public void setSeen(boolean seen) {
+        isSeen = seen;
     }
 }

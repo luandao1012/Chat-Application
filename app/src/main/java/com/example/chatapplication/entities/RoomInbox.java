@@ -3,9 +3,10 @@ package com.example.chatapplication.entities;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class RoomInbox {
+public class RoomInbox implements Serializable {
     private String ID,name, lastMessage, timeLastMessage, image;
     private List<String> participants;
     private List<Message> messages;

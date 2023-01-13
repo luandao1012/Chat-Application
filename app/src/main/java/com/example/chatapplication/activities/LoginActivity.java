@@ -79,15 +79,15 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.edtPassword);
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        user = FirebaseAuth.getInstance().getCurrentUser();
-//        if(user != null ){
-//            startActivity(new Intent(LoginActivity.this, HomeInboxActivity.class));
-//            finish();
-//        }
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null ){
+            startActivity(new Intent(LoginActivity.this, HomeInboxActivity.class));
+            finish();
+        }
+    }
 
     public boolean validate(String email, String password) {
         if (email.isEmpty()) {

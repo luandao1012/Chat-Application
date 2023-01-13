@@ -81,6 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                     String avatarDefault = "https://firebasestorage.googleapis.com/v0/b/chat-application-2f4f4.appspot.com/o/avatar%2Favatar_default.jpg?alt=media&token=868844f5-1306-4d95-8b43-3bc4abd6e3e0";
                                                     User user = new User(username, username, email, password, phone, avatarDefault, email, "Online");
                                                     user.setID(firebaseAuth.getCurrentUser().getUid());
+
                                                     databaseReference.child(firebaseAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
