@@ -39,6 +39,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         if(viewType == MSG_SEND) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.row_chat_sender, parent, false);
             return new ChatViewHolder(view);
@@ -50,14 +51,24 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
+
         holder.txtMessage.setText(messageList.get(position).getMessage());
         holder.txtTimeMessage.setText(messageList.get(position).getTime());
 
-        Glide.with(mContext).load(imgURL).into(holder.imgAvatarReceiver);
-        if(messageList.get(position).isSeen()){
-            holder.imgIsSeen.setVisibility(View.VISIBLE);
-        } else {
-            holder.imgIsSeen.setVisibility(View.GONE);
+        try {
+            Glide.with(mContext).load(imgURL).into(holder.imgAvatarReceiver);
+        } catch (Exception e){
+
+        }
+
+        try {
+            if(messageList.get(position).getIsSeen() == 1){
+                holder.imgIsSeen.setVisibility(View.VISIBLE);
+            } else {
+                holder.imgIsSeen.setVisibility(View.GONE);
+            }
+        } catch (Exception e){
+
         }
     }
 

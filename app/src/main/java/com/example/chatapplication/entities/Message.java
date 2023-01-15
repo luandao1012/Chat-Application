@@ -3,9 +3,8 @@ package com.example.chatapplication.entities;
 import java.io.Serializable;
 
 public class Message implements Serializable {
-    private int id;
+    private int id, isSeen;
     private String sender, date, time, type, message;
-    private boolean isSeen;
 
     public Message() {
     }
@@ -58,11 +57,11 @@ public class Message implements Serializable {
         this.message = message;
     }
 
-    public boolean isSeen() {
+    public int getIsSeen() {
         return isSeen;
     }
 
-    public void setSeen(boolean seen) {
-        isSeen = seen;
+    public void setIsSeen(int isSeen) {
+        this.isSeen = isSeen;
     }
 }

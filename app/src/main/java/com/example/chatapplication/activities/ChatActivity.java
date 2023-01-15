@@ -23,7 +23,6 @@ import com.example.chatapplication.adapter.ChatAdapter;
 import com.example.chatapplication.entities.Message;
 import com.example.chatapplication.entities.RoomInbox;
 import com.example.chatapplication.entities.User;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -51,10 +50,9 @@ public class ChatActivity extends AppCompatActivity {
     DatabaseReference databaseReference, databaseReferenceUser, checkSeenMessage;
     boolean roomAvailable = false;
     List<Message> messageList;
-    String imgURL, IDRoom;
     ChatAdapter chatAdapter;
     ValueEventListener seenListener;
-    RoomInbox room;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,18 +60,18 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         init();
+
         setView(new GetRoomCallback() {
             @Override
             public void getCallback(RoomInbox roomInbox) {
-                room = roomInbox;
+                messageList = new ArrayList<>();
 
-                ChatAdapter chatAdapter = new ChatAdapter(getBaseContext(), messageList, room.getImage());
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext());
-                linearLayoutManager.setStackFromEnd(true);
-                rvChat.setHasFixedSize(true);
-                rvChat.setLayoutManager(linearLayoutManager);
-
+                chatAdapter = new ChatAdapter(getBaseContext(), messageList, roomInbox.getImage());
                 rvChat.setAdapter(chatAdapter);
+
+                readMessage(roomInbox.getID());
+
+                seenMessage(roomInbox.getID());
 
                 imgBack.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -89,15 +87,32 @@ public class ChatActivity extends AppCompatActivity {
                         if (TextUtils.isEmpty(message)) {
                             Toast.makeText(ChatActivity.this, "Cannot send the empty message...", Toast.LENGTH_SHORT).show();
                         } else {
-                            sendMessage(message, room.getID());
+                            sendMessage(message, roomInbox.getID());
                         }
                     }
                 });
-
-        readMessage(room.getID());
-        seenMessage(room.getID());
+                if (rvChat.getAdapter().getItemCount() > 0) {
+                    rvChat.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                        @Override
+                        public void onLayoutChange(View v,
+                                                   int left, int top, int right, int bottom,
+                                                   int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                            if (bottom < oldBottom) {
+                                rvChat.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        rvChat.smoothScrollToPosition(rvChat.getAdapter().getItemCount() - 1);
+                                    }
+                                }, 100);
+                            }
+                        }
+                    });
+                }
             }
+
+
         });
+
 
     }
 
@@ -110,7 +125,11 @@ public class ChatActivity extends AppCompatActivity {
         txtStatus = findViewById(R.id.txtStatusChat);
         edtMessage = findViewById(R.id.edtMessage);
         rvChat = findViewById(R.id.recycler_view_chat);
-        messageList = new ArrayList<>();
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setStackFromEnd(true);
+
+        rvChat.setLayoutManager(linearLayoutManager);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("rooms");
@@ -142,6 +161,7 @@ public class ChatActivity extends AppCompatActivity {
                 if (roomAvailable) {
                     roomInbox = dataSnapshot.getValue(RoomInbox.class);
                     getRoomCallback.getCallback(roomInbox);
+
                     databaseReferenceUser.child(ID).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -193,11 +213,12 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendMessage(String message, String roomId) {
+
         Message oMessage = new Message();
         oMessage.setMessage(message);
         oMessage.setSender(firebaseUser.getUid());
         oMessage.setType("text");
-        oMessage.setSeen(false);
+        oMessage.setIsSeen(0);
         oMessage.setDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         oMessage.setTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
 
@@ -228,7 +249,6 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void readMessage(String roomID) {
-        messageList = new ArrayList<>();
 
         databaseReference.child(roomID).child("messages").addChildEventListener(new ChildEventListener() {
             @Override
@@ -240,7 +260,13 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                Message message = snapshot.getValue(Message.class);
+                for (int i = messageList.size() - 1; i >= 0; i--) {
+                    if (messageList.get(i).getId() == message.getId()) {
+                        messageList.set(i, message);
+                        chatAdapter.notifyDataSetChanged();
+                    }
+                }
             }
 
             @Override
@@ -261,16 +287,18 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void seenMessage(String roomID) {
-        checkSeenMessage = databaseReference.child(roomID).child("message");
+
+        checkSeenMessage = databaseReference.child(roomID).child("messages");
         seenListener = checkSeenMessage.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Message message = dataSnapshot.getValue(Message.class);
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("isSeen", true);
-
-                    databaseReference.child(roomID).child("message").child(String.valueOf(message.getId())).updateChildren(hashMap);
+                    if (message.getSender() != firebaseUser.getUid()) {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("isSeen", 1);
+                        dataSnapshot.getRef().updateChildren(hashMap);
+                    }
                 }
             }
 
