@@ -7,7 +7,7 @@
     android:id="@+id/layoutItemCommunity">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imgInbox"
+        android:id="@+id/imgCommunity"
         style="@style/circle"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -31,7 +31,7 @@
             android:weightSum="1">
 
             <TextView
-                android:id="@+id/txtInbox"
+                android:id="@+id/txtCommunity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Testttt"
@@ -49,7 +49,7 @@
                 android:scaleType="centerCrop"/>
 
             <TextView
-                android:id="@+id/txtTimeInbox"
+                android:id="@+id/txtTimeCommunity"
                 android:layout_width="wrap_content"
                 android:layout_height="23dp"
                 android:layout_gravity="center"
@@ -60,7 +60,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/txtLastMessageInbox"
+            android:id="@+id/txtLastMessageCommunity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="test tin nhan"

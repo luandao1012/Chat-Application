@@ -95,7 +95,6 @@ public class HomeInboxActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(HomeInboxActivity.this, ProfileActivity.class));
-                finish();
             }
         });
 
@@ -134,17 +133,16 @@ public class HomeInboxActivity extends AppCompatActivity {
         mapStatus.put("status", status);
         databaseReference.child(firebaseUser.getUid()).updateChildren(mapStatus);
     }
+
     @Override
     protected void onStart() {
         checkOnlineStatus("Online");
-        Log.d("AA", "Online");
         super.onStart();
     }
 
     @Override
     protected void onDestroy() {
         checkOnlineStatus("Offline");
-        Log.d("AA", "Offline");
         super.onDestroy();
     }
 }

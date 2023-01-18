@@ -9,20 +9,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.chatapplication.R;
 import com.example.chatapplication.entities.RoomInbox;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
-public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxViewHolder>{
+public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxViewHolder> {
     Context mContext;
     List<RoomInbox> roomInboxes;
+    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
     public InboxAdapter(Context mContext, List<RoomInbox> roomInboxes) {
         this.mContext = mContext;
         this.roomInboxes = roomInboxes;
     }
+
 
     @NonNull
     @Override
@@ -33,12 +38,26 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxViewHol
 
     @Override
     public void onBindViewHolder(@NonNull InboxViewHolder holder, int position) {
-        if(roomInboxes.size() == 0) {
+        if (roomInboxes.size() == 0) {
             return;
         }
-        holder.txtInbox.setText(roomInboxes.get(position).getName());
-        holder.txtLastMessage.setText(roomInboxes.get(position).getLastMessage());
+
+        RoomInbox roomInbox = roomInboxes.get(position);
+        List<String> users = roomInbox.getParticipants();
+        String ID = null;
+        for (String i : users) {
+            if (!i.equals(firebaseUser.getUid())) {
+                ID = i;
+            }
+        }
+        holder.txtInbox.setText(roomInboxes.get(position).getNameFromID(ID));
+        if (roomInbox.getSenderLastMessage().equals(firebaseUser.getUid())) {
+            holder.txtLastMessage.setText("You: "+ roomInboxes.get(position).getLastMessage());
+        } else {
+            holder.txtLastMessage.setText(roomInboxes.get(position).getLastMessage());
+        }
         holder.txtTimeInbox.setText(roomInboxes.get(position).getTimeLastMessage());
+        Glide.with(mContext).load(roomInboxes.get(position).getImageFromID(ID)).into(holder.imgInbox);
     }
 
     @Override
@@ -46,10 +65,11 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxViewHol
         return roomInboxes.size();
     }
 
-    static class InboxViewHolder extends RecyclerView.ViewHolder{
+    static class InboxViewHolder extends RecyclerView.ViewHolder {
 
         ShapeableImageView imgInbox;
         TextView txtInbox, txtLastMessage, txtTimeInbox;
+
         public InboxViewHolder(@NonNull View itemView) {
             super(itemView);
 

@@ -57,8 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
         layoutBackHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ProfileActivity.this, HomeInboxActivity.class));
-                finish();
+                onBackPressed();
             }
         });
 

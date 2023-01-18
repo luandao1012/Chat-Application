@@ -57,7 +57,6 @@ public class ContactFragment extends Fragment {
         contactAdapter = new ContactAdapter(getContext(), users);
 
         getListUser();
-
         rvContact.setAdapter(contactAdapter);
     }
 

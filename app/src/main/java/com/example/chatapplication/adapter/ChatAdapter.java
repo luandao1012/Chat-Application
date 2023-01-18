@@ -28,19 +28,26 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     List<Message> messageList;
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
-    String imgURL;
+    String imgUrl;
 
-    public ChatAdapter(Context mContext, List<Message> messageList, String imgURL) {
+    public ChatAdapter(Context mContext, List<Message> messageList) {
         this.mContext = mContext;
         this.messageList = messageList;
-        this.imgURL = imgURL;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        if(viewType == MSG_SEND) {
+        if (viewType == MSG_SEND) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.row_chat_sender, parent, false);
             return new ChatViewHolder(view);
         } else {
@@ -56,18 +63,17 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         holder.txtTimeMessage.setText(messageList.get(position).getTime());
 
         try {
-            Glide.with(mContext).load(imgURL).into(holder.imgAvatarReceiver);
-        } catch (Exception e){
+            Glide.with(mContext).load(imgUrl).into(holder.imgAvatarReceiver);
+        } catch (Exception e) {
 
         }
-
         try {
-            if(messageList.get(position).getIsSeen() == 1){
+            if (messageList.get(position).getIsSeen() == 1) {
                 holder.imgIsSeen.setVisibility(View.VISIBLE);
             } else {
                 holder.imgIsSeen.setVisibility(View.GONE);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -80,14 +86,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     @Override
     public int getItemViewType(int position) {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(messageList.get(position).getSender().equals(firebaseUser.getUid())){
+        if (messageList.get(position).getSender().equals(firebaseUser.getUid())) {
             return MSG_SEND;
         } else {
             return MSG_RECEIVER;
         }
     }
 
-    static class ChatViewHolder extends RecyclerView.ViewHolder{
+    static class ChatViewHolder extends RecyclerView.ViewHolder {
         ShapeableImageView imgAvatarReceiver;
         TextView txtMessage, txtTimeMessage;
         ImageView imgIsSeen;
@@ -96,7 +102,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             super(itemView);
             imgAvatarReceiver = itemView.findViewById(R.id.imgAvatarChatReceiver);
             txtMessage = itemView.findViewById(R.id.txtMessage);
-            txtTimeMessage= itemView.findViewById(R.id.txtTimeMessage);
+            txtTimeMessage = itemView.findViewById(R.id.txtTimeMessage);
             imgIsSeen = itemView.findViewById(R.id.imgIsSeen);
         }
     }

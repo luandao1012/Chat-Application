@@ -1,27 +1,19 @@
 package com.example.chatapplication.entities;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RoomInbox implements Serializable {
-    private String ID,name, lastMessage, timeLastMessage, image;
+    private String ID, lastMessage, timeLastMessage, dateLastMessage, senderLastMessage;
     private List<String> participants;
     private List<Message> messages;
+    private HashMap<String, String> image;
+    private HashMap<String, String> name;
 
     public RoomInbox() {
-    }
-
-    public RoomInbox(String ID, String name, String lastMessage, String timeLastMessage, String image, List<String> participants, List<Message> messages) {
-        this.ID = ID;
-        this.name = name;
-        this.lastMessage = lastMessage;
-        this.timeLastMessage = timeLastMessage;
-        this.image = image;
-        this.participants = participants;
-        this.messages = messages;
     }
 
     public String getID() {
@@ -30,14 +22,6 @@ public class RoomInbox implements Serializable {
 
     public void setID(String ID) {
         this.ID = ID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getLastMessage() {
@@ -68,15 +52,49 @@ public class RoomInbox implements Serializable {
         return messages;
     }
 
-    public String getImage() {
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
+
+
+    public String getDateLastMessage() {
+        return dateLastMessage;
+    }
+
+    public void setDateLastMessage(String dateLastMessage) {
+        this.dateLastMessage = dateLastMessage;
+    }
+
+    public String getSenderLastMessage() {
+        return senderLastMessage;
+    }
+
+    public void setSenderLastMessage(String senderLastMessage) {
+        this.senderLastMessage = senderLastMessage;
+    }
+
+    public HashMap<String, String> getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public String getImageFromID(String id){
+        HashMap<String, String> image = getImage();
+        return image.get(id);
+    }
+
+    public void setImage(HashMap<String, String> image) {
         this.image = image;
     }
 
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
+    public HashMap<String, String> getName() {
+        return name;
+    }
+    public String getNameFromID(String id){
+        HashMap<String, String> name = getName();
+        return name.get(id);
+    }
+
+    public void setName(HashMap<String, String> name) {
+        this.name = name;
     }
 }
