@@ -1,7 +1,10 @@
 package com.example.chatapplication.notifications;
 
 public class Token {
-    String token;
+    private String token;
+
+    public Token() {
+    }
 
     public Token(String token) {
         this.token = token;

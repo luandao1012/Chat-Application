@@ -47,11 +47,4 @@ public class Data {
         this.sent = sent;
     }
 
-    public Integer getIcon() {
-        return icon;
-    }
-
-    public void setIcon(Integer icon) {
-        this.icon = icon;
-    }
 }

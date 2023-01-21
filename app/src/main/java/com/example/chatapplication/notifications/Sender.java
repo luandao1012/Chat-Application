@@ -2,9 +2,14 @@ package com.example.chatapplication.notifications;
 
 public class Sender {
     private Data data;
-    private String receiver;
+    private String to;
 
     public Sender() {
+    }
+
+    public Sender(Data data, String to) {
+        this.data = data;
+        this.to = to;
     }
 
     public Data getData() {
@@ -15,16 +20,12 @@ public class Sender {
         this.data = data;
     }
 
-    public String getReceiver() {
-        return receiver;
+
+    public String getTo() {
+        return to;
     }
 
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
-
-    public Sender(Data data, String receiver) {
-        this.data = data;
-        this.receiver = receiver;
+    public void setTo(String to) {
+        this.to = to;
     }
 }

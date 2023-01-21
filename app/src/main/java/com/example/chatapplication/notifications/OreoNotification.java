@@ -1,5 +1,6 @@
 package com.example.chatapplication.notifications;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,39 +10,40 @@ import android.content.ContextWrapper;
 import android.net.Uri;
 import android.os.Build;
 
-public class AboveNotification extends ContextWrapper {
+public class OreoNotification extends ContextWrapper {
 
-    private static final String ID = "some_id";
-    private static final String NAME = "Chat Application";
+    private static final String ID = "push_notification";
+    private static final String NAME = "ChatApplication";
 
     private NotificationManager notificationManager;
 
-
-    public AboveNotification(Context base) {
+    public OreoNotification(Context base) {
         super(base);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel();
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.O)
     private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = new NotificationChannel(ID, NAME, importance);
-        // Register the channel with the system; you can't change the importance
-        // or other notification behaviors after this
+        NotificationChannel channel = new NotificationChannel(ID, NAME, NotificationManager.IMPORTANCE_DEFAULT);
+        channel.enableLights(false);
+        channel.enableVibration(true);
+        channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+
         getManager().createNotificationChannel(channel);
     }
 
-    private NotificationManager getManager() {
+    public NotificationManager getManager() {
         if (notificationManager == null) {
             notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         }
         return notificationManager;
     }
 
-    public Notification.Builder getNotifications(String title, String body, PendingIntent intent, Uri soundUri, String icon){
+    @TargetApi(Build.VERSION_CODES.O)
+    public Notification.Builder getOreoNotifications(String title, String body, PendingIntent intent, Uri soundUri, String icon){
+
         return new Notification.Builder(getApplicationContext(), ID)
                 .setContentIntent(intent)
                 .setContentTitle(title)
@@ -50,5 +52,4 @@ public class AboveNotification extends ContextWrapper {
                 .setSmallIcon(Integer.parseInt(icon))
                 .setAutoCancel(true);
     }
-
 }

@@ -1,6 +1,10 @@
 package com.example.chatapplication.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,17 +12,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.sax.RootElement;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.bumptech.glide.Glide;
 import com.example.chatapplication.R;
 import com.example.chatapplication.adapter.InboxAdapter;
 import com.example.chatapplication.entities.RoomInbox;
-import com.example.chatapplication.entities.User;
+import com.example.chatapplication.notifications.Token;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -26,7 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +56,14 @@ public class InboxFragment extends Fragment {
 
         init(view);
         getListRoom(uid);
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                String token = task.getResult();
+                updateToken(token);
+                Log.d("Tokens", token);
+            }
+        });
     }
 
     private void init(View view) {
@@ -87,7 +94,6 @@ public class InboxFragment extends Fragment {
                     if (roomInbox.getLastMessage() != null) {
                         roomInboxList.add(roomInbox);
                         inboxAdapter.notifyDataSetChanged();
-
                     }
                 }
             }
@@ -117,4 +123,9 @@ public class InboxFragment extends Fragment {
         });
     }
 
+    private void updateToken(String token){
+        DatabaseReference databaseReferenceToken = FirebaseDatabase.getInstance().getReference("tokens");
+        Token token1 = new Token(token);
+        databaseReferenceToken.child(uid).setValue(token1);
+    }
 }

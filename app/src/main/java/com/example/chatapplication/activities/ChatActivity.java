@@ -1,20 +1,19 @@
 package com.example.chatapplication.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.chatapplication.GetRoomCallback;
@@ -23,6 +22,14 @@ import com.example.chatapplication.adapter.ChatAdapter;
 import com.example.chatapplication.entities.Message;
 import com.example.chatapplication.entities.RoomInbox;
 import com.example.chatapplication.entities.User;
+import com.example.chatapplication.notifications.APIService;
+import com.example.chatapplication.notifications.Client;
+import com.example.chatapplication.notifications.Data;
+import com.example.chatapplication.notifications.Response;
+import com.example.chatapplication.notifications.Sender;
+import com.example.chatapplication.notifications.Token;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -39,6 +46,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import retrofit2.Callback;
+
 public class ChatActivity extends AppCompatActivity {
 
     ImageView imgAvatar, imgBack, imgSend;
@@ -52,6 +61,8 @@ public class ChatActivity extends AppCompatActivity {
     ChatAdapter chatAdapter;
     ValueEventListener seenListener;
     String ID;
+    APIService apiService;
+    boolean notify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +85,13 @@ public class ChatActivity extends AppCompatActivity {
                 imgSend.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         String message = edtMessage.getText().toString().trim();
                         if (TextUtils.isEmpty(message)) {
                             Toast.makeText(ChatActivity.this, "Cannot send the empty message...", Toast.LENGTH_SHORT).show();
                         } else {
                             sendMessage(message, roomInbox.getID());
+                            notify = true;
                         }
                     }
                 });
@@ -110,6 +123,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
     private void init() {
+        apiService = Client.getRetrofit("https://fcm.googleapis.com/").create(APIService.class);
         imgAvatar = findViewById(R.id.imgAvatarChat);
         imgSend = findViewById(R.id.imgSendMessage);
         imgBack = findViewById(R.id.imgBackChat);
@@ -167,14 +181,14 @@ public class ChatActivity extends AppCompatActivity {
                     databaseReferenceUser.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for(DataSnapshot dataSnapshot:snapshot.getChildren()){
-                                if (dataSnapshot.getKey().equals(ID)){
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                if (dataSnapshot.getKey().equals(ID)) {
                                     User user = dataSnapshot.getValue(User.class);
                                     image.put(ID, user.getImage());
                                     name.put(ID, user.getName());
                                     txtStatus.setText(user.getStatus());
                                 }
-                                if (dataSnapshot.getKey().equals(firebaseUser.getUid())){
+                                if (dataSnapshot.getKey().equals(firebaseUser.getUid())) {
                                     User user = dataSnapshot.getValue(User.class);
                                     image.put(firebaseUser.getUid(), user.getImage());
                                     name.put(firebaseUser.getUid(), user.getName());
@@ -183,10 +197,12 @@ public class ChatActivity extends AppCompatActivity {
                             roomInbox.setImage(image);
                             roomInbox.setName(name);
                             databaseReference.child(ID + "-" + firebaseUser.getUid()).setValue(roomInbox);
-                            setViewChat(ID,roomInbox);
+                            setViewChat(ID, roomInbox);
                         }
+
                         @Override
-                        public void onCancelled(@NonNull DatabaseError error) {}
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
                     });
                 }
                 getRoomCallback.getCallback(roomInbox);
@@ -232,8 +248,62 @@ public class ChatActivity extends AppCompatActivity {
 
         edtMessage.setText("");
 
+        final String msg = oMessage.getMessage();
+        databaseReferenceUser.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                if (notify) {
+                    sendNotification(ID, user.getUsername(), message);
+                }
+                notify = false;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
-    private void setViewChat(String id, RoomInbox roomInbox){
+
+    private void sendNotification(String id, String username, String message) {
+
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("tokens");
+
+        tokens.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                DataSnapshot dataSnapshot = task.getResult();
+                Token token = dataSnapshot.getValue(Token.class);
+
+                Data data = new Data(id, username + ": " + message, "New Message", firebaseUser.getUid(),
+                        R.mipmap.ic_launcher);
+
+                Sender sender = new Sender(data, token.getToken());
+
+                apiService.sendNotification(sender).enqueue(new Callback<Response>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<Response> call, retrofit2.Response<Response> response) {
+                        if (response.code() == 200) {
+                            if (response.body().success != 1) {
+                                Toast.makeText(ChatActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(ChatActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(retrofit2.Call<Response> call, Throwable t) {
+                        Toast.makeText(ChatActivity.this, "Failed Response", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    private void setViewChat(String id, RoomInbox roomInbox) {
         Glide.with(getBaseContext()).load(roomInbox.getImageFromID(id)).into(imgAvatar);
         txtUsername.setText(roomInbox.getNameFromID(id));
         chatAdapter.setImgUrl(roomInbox.getImageFromID(id));
