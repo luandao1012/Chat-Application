@@ -4,10 +4,10 @@ package com.example.chatapplication.entities;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RoomInbox implements Serializable {
     private String ID, lastMessage, timeLastMessage, dateLastMessage, senderLastMessage;
+    private int isSeenLastMessage;
     private List<String> participants;
     private List<Message> messages;
     private HashMap<String, String> image;
@@ -96,5 +96,13 @@ public class RoomInbox implements Serializable {
 
     public void setName(HashMap<String, String> name) {
         this.name = name;
+    }
+
+    public int getIsSeenLastMessage() {
+        return isSeenLastMessage;
+    }
+
+    public void setIsSeenLastMessage(int isSeenLastMessage) {
+        this.isSeenLastMessage = isSeenLastMessage;
     }
 }

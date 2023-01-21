@@ -76,6 +76,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         } catch (Exception e) {
 
         }
+
     }
 
     @Override

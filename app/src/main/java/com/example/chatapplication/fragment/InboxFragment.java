@@ -89,7 +89,6 @@ public class InboxFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.getKey().contains(uid)) {
-
                     RoomInbox roomInbox = snapshot.getValue(RoomInbox.class);
                     if (roomInbox.getLastMessage() != null) {
                         roomInboxList.add(roomInbox);
@@ -100,10 +99,15 @@ public class InboxFragment extends Fragment {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                RoomInbox roomInbox = snapshot.getValue(RoomInbox.class
-//                roomInboxList.add(roomInbox);
-//                Log.d("Room", String.valueOf(roomInboxList.size()));
-//                inboxAdapter.notifyItemChanged(roomInboxList.size());
+                RoomInbox roomInbox = snapshot.getValue(RoomInbox.class);
+                for(RoomInbox room:roomInboxList){
+                    if(room.getID().equals(roomInbox.getID())){
+                        roomInboxList.remove(room);
+                        roomInboxList.add(0, roomInbox);
+                        break;
+                    }
+                }
+                inboxAdapter.notifyDataSetChanged();
             }
 
             @Override

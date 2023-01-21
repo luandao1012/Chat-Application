@@ -274,31 +274,33 @@ public class ChatActivity extends AppCompatActivity {
         tokens.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                DataSnapshot dataSnapshot = task.getResult();
-                Token token = dataSnapshot.getValue(Token.class);
+                if (task.isSuccessful()) {
+                    DataSnapshot dataSnapshot = task.getResult();
+                    Token token = dataSnapshot.getValue(Token.class);
 
-                Data data = new Data(id, username + ": " + message, "New Message", firebaseUser.getUid(),
-                        R.mipmap.ic_launcher);
+                    Data data = new Data(id, username + ": " + message, "New Message", firebaseUser.getUid(),
+                            R.mipmap.ic_launcher);
 
-                Sender sender = new Sender(data, token.getToken());
+                    Sender sender = new Sender(data, token.getToken());
 
-                apiService.sendNotification(sender).enqueue(new Callback<Response>() {
-                    @Override
-                    public void onResponse(retrofit2.Call<Response> call, retrofit2.Response<Response> response) {
-                        if (response.code() == 200) {
-                            if (response.body().success != 1) {
-                                Toast.makeText(ChatActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(ChatActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                    apiService.sendNotification(sender).enqueue(new Callback<Response>() {
+                        @Override
+                        public void onResponse(retrofit2.Call<Response> call, retrofit2.Response<Response> response) {
+                            if (response.code() == 200) {
+                                if (response.body().success != 1) {
+                                    Toast.makeText(ChatActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(ChatActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(retrofit2.Call<Response> call, Throwable t) {
-                        Toast.makeText(ChatActivity.this, "Failed Response", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(retrofit2.Call<Response> call, Throwable t) {
+                            Toast.makeText(ChatActivity.this, "Failed Response", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
     }
@@ -316,6 +318,7 @@ public class ChatActivity extends AppCompatActivity {
         hashMap.put("timeLastMessage", message.getTime());
         hashMap.put("dateLastMessage", message.getDate());
         hashMap.put("senderLastMessage", message.getSender());
+        hashMap.put("isSeenLastMessage", message.getIsSeen());
 
         databaseReference.child(roomID).updateChildren(hashMap);
     }
@@ -339,7 +342,6 @@ public class ChatActivity extends AppCompatActivity {
                 for (int i = messageList.size() - 1; i >= 0; i--) {
                     if (messageList.get(i).getId() == message.getId()) {
                         messageList.set(i, message);
-
                         chatAdapter.notifyDataSetChanged();
                     }
                 }
@@ -382,7 +384,6 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }

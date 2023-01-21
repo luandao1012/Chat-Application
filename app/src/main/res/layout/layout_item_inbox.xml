@@ -59,6 +59,6 @@
             android:text="test  tin nhan"
             android:textColor="#ACB3BF"
             android:textSize="12sp"
-            android:fontFamily="@font/open_sans"/>
+            android:fontFamily="@font/open_sans" />
     </LinearLayout>
 </LinearLayout>
