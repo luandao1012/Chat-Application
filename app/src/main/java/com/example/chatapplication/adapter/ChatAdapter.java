@@ -60,7 +60,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
 
         holder.txtMessage.setText(messageList.get(position).getMessage());
-        holder.txtTimeMessage.setText(messageList.get(position).getTime());
+        holder.txtTimeMessage.setText(messageList.get(position).getTime().substring(0, 5));
 
         try {
             Glide.with(mContext).load(imgUrl).into(holder.imgAvatarReceiver);

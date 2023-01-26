@@ -1,19 +1,17 @@
 package com.example.chatapplication.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.chatapplication.R;
@@ -30,7 +28,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class HomeInboxActivity extends AppCompatActivity {
     ImageView imgProfileHome;
@@ -51,25 +48,7 @@ public class HomeInboxActivity extends AppCompatActivity {
         setView();
     }
 
-    public void setView(){
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
-        databaseReference.child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                assert user != null;
-                Glide.with(getBaseContext()).load(user.getImage()).into(imgProfileHome);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
     public void init() {
         imgProfileHome = findViewById(R.id.imgProfileHome);
         tabLayout = findViewById(R.id.tab_layout);
@@ -127,7 +106,25 @@ public class HomeInboxActivity extends AppCompatActivity {
             }
         });
     }
+    public void setView(){
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
+        databaseReference.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                assert user != null;
+                Glide.with(getBaseContext()).load(user.getImage()).into(imgProfileHome);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
     public void checkOnlineStatus(String status){
         HashMap<String, Object> mapStatus = new HashMap<>();
         mapStatus.put("status", status);

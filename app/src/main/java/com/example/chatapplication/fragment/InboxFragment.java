@@ -27,7 +27,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class InboxFragment extends Fragment {
@@ -72,7 +77,6 @@ public class InboxFragment extends Fragment {
 
         rvInbox = view.findViewById(R.id.recycler_view_inbox);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-//        linearLayoutManager.setReverseLayout(true);
         rvInbox.setLayoutManager(linearLayoutManager);
         inboxAdapter = new InboxAdapter(getContext(), roomInboxList);
         rvInbox.setAdapter(inboxAdapter);
@@ -84,7 +88,6 @@ public class InboxFragment extends Fragment {
     }
 
     private void getListRoom(String uid) {
-
         databaseReferenceRoom.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -92,6 +95,7 @@ public class InboxFragment extends Fragment {
                     RoomInbox roomInbox = snapshot.getValue(RoomInbox.class);
                     if (roomInbox.getLastMessage() != null) {
                         roomInboxList.add(roomInbox);
+                        sortRoom();
                         inboxAdapter.notifyDataSetChanged();
                     }
                 }
@@ -100,11 +104,14 @@ public class InboxFragment extends Fragment {
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 RoomInbox roomInbox = snapshot.getValue(RoomInbox.class);
-                for(RoomInbox room:roomInboxList){
-                    if(room.getID().equals(roomInbox.getID())){
-                        roomInboxList.remove(room);
-                        roomInboxList.add(0, roomInbox);
-                        break;
+                Log.d("Updateee", "Thay doi");
+                for (RoomInbox room : roomInboxList) {
+                    if (room.getID().equals(roomInbox.getID())) {
+                        if (room.getMessages().size() < roomInbox.getMessages().size()) {
+                            roomInboxList.remove(room);
+                            roomInboxList.add(0, roomInbox);
+                            break;
+                        }
                     }
                 }
                 inboxAdapter.notifyDataSetChanged();
@@ -127,9 +134,30 @@ public class InboxFragment extends Fragment {
         });
     }
 
-    private void updateToken(String token){
+    private void updateToken(String token) {
         DatabaseReference databaseReferenceToken = FirebaseDatabase.getInstance().getReference("tokens");
         Token token1 = new Token(token);
         databaseReferenceToken.child(uid).setValue(token1);
+    }
+
+    private void sortRoom(){
+        Collections.sort(roomInboxList, new Comparator<RoomInbox>() {
+            @Override
+            public int compare(RoomInbox o1, RoomInbox o2) {
+                String date1 = o1.getDateLastMessage() + " " + o1.getTimeLastMessage();
+                String date2 = o2.getDateLastMessage() + " " + o2.getTimeLastMessage();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+                try {
+                    Date dateo1 = simpleDateFormat.parse(date1);
+                    Date dateo2 = simpleDateFormat.parse(date2);
+
+                    return dateo2.compareTo(dateo1);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return 0;
+            }
+        });
     }
 }

@@ -1,8 +1,5 @@
 package com.example.chatapplication.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -13,6 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chatapplication.R;
 import com.example.chatapplication.entities.User;
@@ -112,7 +112,8 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-    public void init(){
+
+    public void init() {
         txtLoginNow = findViewById(R.id.txtLoginNow);
         edtUsername = findViewById(R.id.edtUsernameRegister);
         edtEmail = findViewById(R.id.edtEmailRegister);

@@ -154,8 +154,6 @@ public class ChatActivity extends AppCompatActivity {
         List<String> participants = new ArrayList<>();
         participants.add(ID);
         participants.add(firebaseUser.getUid());
-        HashMap<String, String> image = new HashMap<>();
-        HashMap<String, String> name = new HashMap<>();
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -172,38 +170,12 @@ public class ChatActivity extends AppCompatActivity {
                 RoomInbox roomInbox;
                 if (roomAvailable) {
                     roomInbox = dataSnapshot.getValue(RoomInbox.class);
-                    setViewChat(ID, roomInbox);
+                    updateUser(ID, roomInbox);
                 } else {
                     roomInbox = new RoomInbox();
                     roomInbox.setParticipants(participants);
                     roomInbox.setID(ID + "-" + firebaseUser.getUid());
-
-                    databaseReferenceUser.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                if (dataSnapshot.getKey().equals(ID)) {
-                                    User user = dataSnapshot.getValue(User.class);
-                                    image.put(ID, user.getImage());
-                                    name.put(ID, user.getName());
-                                    txtStatus.setText(user.getStatus());
-                                }
-                                if (dataSnapshot.getKey().equals(firebaseUser.getUid())) {
-                                    User user = dataSnapshot.getValue(User.class);
-                                    image.put(firebaseUser.getUid(), user.getImage());
-                                    name.put(firebaseUser.getUid(), user.getName());
-                                }
-                            }
-                            roomInbox.setImage(image);
-                            roomInbox.setName(name);
-                            databaseReference.child(ID + "-" + firebaseUser.getUid()).setValue(roomInbox);
-                            setViewChat(ID, roomInbox);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                        }
-                    });
+                    updateUser(ID, roomInbox);
                 }
                 getRoomCallback.getCallback(roomInbox);
             }
@@ -224,7 +196,7 @@ public class ChatActivity extends AppCompatActivity {
         oMessage.setType("text");
         oMessage.setIsSeen(0);
         oMessage.setDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-        oMessage.setTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
+        oMessage.setTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
         updateRoom(roomId, oMessage);
 
@@ -254,7 +226,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 if (notify) {
-                    sendNotification(ID, user.getUsername(), message);
+                    sendNotification(ID, user.getName(), message);
                 }
                 notify = false;
             }
@@ -321,6 +293,38 @@ public class ChatActivity extends AppCompatActivity {
         hashMap.put("isSeenLastMessage", message.getIsSeen());
 
         databaseReference.child(roomID).updateChildren(hashMap);
+    }
+
+    private void updateUser(String ID, RoomInbox roomInbox) {
+        HashMap<String, String> image = new HashMap<>();
+        HashMap<String, String> name = new HashMap<>();
+        databaseReferenceUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    if (dataSnapshot.getKey().equals(ID)) {
+                        User user = dataSnapshot.getValue(User.class);
+                        image.put(ID, user.getImage());
+                        name.put(ID, user.getName());
+                        txtStatus.setText(user.getStatus());
+                    }
+                    if (dataSnapshot.getKey().equals(firebaseUser.getUid())) {
+                        User user = dataSnapshot.getValue(User.class);
+                        image.put(firebaseUser.getUid(), user.getImage());
+                        name.put(firebaseUser.getUid(), user.getName());
+                    }
+                }
+                roomInbox.setImage(image);
+                roomInbox.setName(name);
+                databaseReference.child(roomInbox.getID()).setValue(roomInbox);
+                setViewChat(ID, roomInbox);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void readMessage(String roomID) {

@@ -66,7 +66,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxViewHol
 //            }
             holder.txtLastMessage.setText(roomInboxes.get(position).getLastMessage());
         }
-        holder.txtTimeInbox.setText(roomInboxes.get(position).getTimeLastMessage());
+        holder.txtTimeInbox.setText(roomInboxes.get(position).getTimeLastMessage().substring(0, 5));
         Glide.with(mContext).load(roomInboxes.get(position).getImageFromID(ID)).into(holder.imgInbox);
 
         String finalID = ID;

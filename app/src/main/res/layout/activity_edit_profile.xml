@@ -39,14 +39,15 @@
         android:id="@+id/imgEditProfile"
         android:layout_width="125dp"
         android:layout_height="125dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskbarEditProfile"
         app:shapeAppearanceOverlay="@style/circle"
         app:srcCompat="@drawable/avatar_img"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        app:strokeColor="@null"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -66,6 +67,7 @@
             android:textSize="14sp" />
 
         <EditText
+            android:id="@+id/edtNameEditProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
@@ -82,12 +84,15 @@
             android:textSize="14sp" />
 
         <EditText
+            android:id="@+id/edtUsernameEditProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:text="test"
             android:textColor="#FEFCFC"
-            android:textSize="17sp" />
+            android:textSize="17sp"
+            android:editable="false"
+            android:inputType="none"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -98,6 +103,7 @@
             android:textSize="14sp" />
 
         <EditText
+            android:id="@+id/edtBioEditProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
@@ -114,6 +120,7 @@
             android:textSize="14sp" />
 
         <EditText
+            android:id="@+id/edtTagEditProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
