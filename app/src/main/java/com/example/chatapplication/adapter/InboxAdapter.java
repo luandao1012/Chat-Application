@@ -2,6 +2,8 @@ package com.example.chatapplication.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,11 +62,17 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxViewHol
         if (roomInbox.getSenderLastMessage().equals(firebaseUser.getUid())) {
             holder.txtLastMessage.setText("You: " + roomInboxes.get(position).getLastMessage());
         } else {
-//            if (roomInbox.getIsSeenLastMessage() == 0) {
-//                holder.txtLastMessage.setTextColor(Color.parseColor("#FEFCFC"));
-//                holder.txtLastMessage.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-//            }
-            holder.txtLastMessage.setText(roomInboxes.get(position).getLastMessage());
+            if (roomInbox.getIsSeenLastMessage() == 1) {
+                holder.txtLastMessage.setVisibility(View.VISIBLE);
+                holder.txtLastMessage.setText(roomInboxes.get(position).getLastMessage());
+                holder.txtLastMessageSeen.setVisibility(View.GONE);
+            } else {
+                holder.txtLastMessage.setVisibility(View.GONE);
+                holder.txtLastMessageSeen.setVisibility(View.VISIBLE);
+                holder.txtLastMessageSeen.setText(roomInboxes.get(position).getLastMessage());
+                holder.txtLastMessageSeen.setTextColor(Color.parseColor("#FEFCFC"));
+                holder.txtLastMessageSeen.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            }
         }
         holder.txtTimeInbox.setText(roomInboxes.get(position).getTimeLastMessage().substring(0, 5));
         Glide.with(mContext).load(roomInboxes.get(position).getImageFromID(ID)).into(holder.imgInbox);
@@ -90,7 +98,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxViewHol
 
     static class InboxViewHolder extends RecyclerView.ViewHolder {
         ShapeableImageView imgInbox;
-        TextView txtInbox, txtLastMessage, txtTimeInbox;
+        TextView txtInbox, txtLastMessage, txtTimeInbox, txtLastMessageSeen;
 
         public InboxViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -99,6 +107,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxViewHol
             txtInbox = itemView.findViewById(R.id.txtInbox);
             txtLastMessage = itemView.findViewById(R.id.txtLastMessageInbox);
             txtTimeInbox = itemView.findViewById(R.id.txtTimeInbox);
+            txtLastMessageSeen = itemView.findViewById(R.id.txtLastMessageSeenInbox);
         }
     }
 }

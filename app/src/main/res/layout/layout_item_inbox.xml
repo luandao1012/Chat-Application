@@ -56,9 +56,19 @@
             android:id="@+id/txtLastMessageInbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="test  tin nhan"
+            android:text="test tin nhan"
             android:textColor="#ACB3BF"
             android:textSize="12sp"
             android:fontFamily="@font/open_sans" />
+
+        <TextView
+            android:id="@+id/txtLastMessageSeenInbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="test tin nhan"
+            android:textColor="#FEFCFC"
+            android:textSize="13sp"
+            android:fontFamily="@font/open_sans"
+            android:visibility="gone"/>
     </LinearLayout>
 </LinearLayout>

@@ -1,7 +1,6 @@
 package com.example.chatapplication.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +65,6 @@ public class InboxFragment extends Fragment {
             public void onComplete(@NonNull Task<String> task) {
                 String token = task.getResult();
                 updateToken(token);
-                Log.d("Tokens", token);
             }
         });
     }
@@ -104,16 +102,22 @@ public class InboxFragment extends Fragment {
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 RoomInbox roomInbox = snapshot.getValue(RoomInbox.class);
-                Log.d("Updateee", "Thay doi");
-                for (RoomInbox room : roomInboxList) {
-                    if (room.getID().equals(roomInbox.getID())) {
-                        if (room.getMessages().size() < roomInbox.getMessages().size()) {
-                            roomInboxList.remove(room);
-                            roomInboxList.add(0, roomInbox);
-                            break;
-                        }
+//                for (RoomInbox room : roomInboxList) {
+//                    if (room.getID().equals(roomInbox.getID())) {
+//                        if (room.getMessages().size() < roomInbox.getMessages().size()) {
+//                            roomInboxList.remove(room);
+//                            roomInboxList.add(0, roomInbox);
+//                            break;
+//                        }
+//                    }
+//                }
+                for (int i = 0; i < roomInboxList.size(); i++) {
+                    if (roomInbox.getID().equals(roomInboxList.get(i).getID())) {
+                        roomInboxList.set(i, roomInbox);
+                        break;
                     }
                 }
+                sortRoom();
                 inboxAdapter.notifyDataSetChanged();
             }
 
@@ -140,7 +144,7 @@ public class InboxFragment extends Fragment {
         databaseReferenceToken.child(uid).setValue(token1);
     }
 
-    private void sortRoom(){
+    private void sortRoom() {
         Collections.sort(roomInboxList, new Comparator<RoomInbox>() {
             @Override
             public int compare(RoomInbox o1, RoomInbox o2) {

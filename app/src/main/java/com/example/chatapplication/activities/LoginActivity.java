@@ -1,8 +1,5 @@
 package com.example.chatapplication.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -11,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chatapplication.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseUser user;
     EditText edtEmail;
     TextInputLayout edtPassword;
-    TextView txtCreateNow;
+    TextView txtCreateNow, txtForgotPassword;
     Button btnLogin;
 
     @Override
@@ -41,6 +41,12 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 LoginActivity.this.startActivity(intent);
                 finish();
+            }
+        });
+        txtForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
             }
         });
 
@@ -77,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
+        txtForgotPassword = findViewById(R.id.txtForgotPasswordLogin);
     }
 
     @Override

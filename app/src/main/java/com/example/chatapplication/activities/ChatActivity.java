@@ -68,9 +68,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
         init();
-
         setView(new GetRoomCallback() {
             @Override
             public void getCallback(RoomInbox roomInbox) {
@@ -189,7 +187,6 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendMessage(String message, String roomId) {
-
         Message oMessage = new Message();
         oMessage.setMessage(message);
         oMessage.setSender(firebaseUser.getUid());
@@ -197,9 +194,7 @@ public class ChatActivity extends AppCompatActivity {
         oMessage.setIsSeen(0);
         oMessage.setDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         oMessage.setTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-
         updateRoom(roomId, oMessage);
-
         databaseReference.child(roomId).child("messages").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -217,9 +212,7 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-
         edtMessage.setText("");
-
         final String msg = oMessage.getMessage();
         databaseReferenceUser.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -240,9 +233,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendNotification(String id, String username, String message) {
-
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("tokens");
-
         tokens.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -252,9 +243,7 @@ public class ChatActivity extends AppCompatActivity {
 
                     Data data = new Data(id, username + ": " + message, "New Message", firebaseUser.getUid(),
                             R.mipmap.ic_launcher);
-
                     Sender sender = new Sender(data, token.getToken());
-
                     apiService.sendNotification(sender).enqueue(new Callback<Response>() {
                         @Override
                         public void onResponse(retrofit2.Call<Response> call, retrofit2.Response<Response> response) {
@@ -349,6 +338,7 @@ public class ChatActivity extends AppCompatActivity {
                         chatAdapter.notifyDataSetChanged();
                     }
                 }
+                databaseReference.child(roomID).child("isSeenLastMessage").setValue(message.getIsSeen());
             }
 
             @Override
@@ -381,6 +371,8 @@ public class ChatActivity extends AppCompatActivity {
                     if (!message.getSender().equals(firebaseUser.getUid())) {
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("isSeen", 1);
+                        message.setIsSeen(1);
+
                         snapshot.getRef().child(String.valueOf(message.getId())).updateChildren(hashMap);
                     }
                 }
